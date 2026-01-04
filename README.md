@@ -1,6 +1,8 @@
-# Efficient-24x7-Image
+# `Efficient 24x7 Image`
 
 Optimized YouTube 24/7 streaming script that reduces costs from ~$2 to ~$0.20 by eliminating unnecessary video processing.
+
+![ss](https://github.com/user-attachments/assets/26c00766-7d43-4423-9383-7cbcd9c3d426)
 
 ## Key Optimizations
 
