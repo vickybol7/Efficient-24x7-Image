@@ -91,8 +91,11 @@ ffmpeg_cmd = [
     '-maxrate', '800k',
     '-bufsize', '1600k',     # Buffer size (2x bitrate)
     
-    # Audio copy (no re-encoding needed - saves CPU)
-    '-c:a', 'copy',
+    # Audio encoding (minimal CPU cost, ensures proper bitrate metadata)
+    '-c:a', 'aac',
+    '-b:a', '128k',        # 128 Kbps as recommended by YouTube
+    '-ar', '44100',        # Sample rate (standard)
+    '-ac', '2',            # Stereo audio
     
     '-f', 'flv',
     '-flvflags', 'no_duration_filesize',
