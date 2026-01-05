@@ -12,20 +12,21 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "YOUR_CHAT_ID_HERE")
 
 def send_telegram_alert(service_name, status, project_name):
-    """Sends the alert message to Telegram."""
+    """Sends the alert message to Telegram using HTML."""
     
-    # Emoji selection based on status
+    # Emoji selection
     emoji = "⚠️"
     if status == "CRASHED":
         emoji = "💥"
     elif status == "OOM_KILLED":
         emoji = "💀 (Out of Memory)"
     
+    # Use HTML tags for formatting <b> = Bold
     message_text = (
-        f"{emoji} **STREAM ALERT** {emoji}\n\n"
-        f"**Project:** {project_name}\n"
-        f"**Service:** {service_name}\n"
-        f"**Status:** {status}\n\n"
+        f"{emoji} <b>STREAM ALERT</b>\n\n"
+        f"<b>Project:</b> {project_name}\n"
+        f"<b>Service:</b> {service_name}\n"
+        f"<b>Status:</b> {status}\n\n"
         f"Check your Railway dashboard immediately!"
     )
 
@@ -33,7 +34,7 @@ def send_telegram_alert(service_name, status, project_name):
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
         "text": message_text,
-        "parse_mode": "Markdown"
+        "parse_mode": "HTML"  # <--- CHANGED FROM 'Markdown' TO 'HTML'
     }
 
     try:
@@ -79,3 +80,24 @@ def handle_webhook():
 if __name__ == '__main__':
     # Run the server
     app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
+
+
+r'''
+(.venv) PS C:\Users\surface\Documents\GitHub\Efficient-24x7-Image> python .\app.py
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+Press CTRL+C to quit
+📥 Received Webhook: DEPLOYMENT - CRASHED
+✅ Alert sent to Telegram for CRASHED
+127.0.0.1 - - [05/Jan/2026 06:23:02] "POST /webhook HTTP/1.1" 200 -
+📥 Received Webhook: DEPLOYMENT - OOM_KILLED
+✅ Alert sent to Telegram for OOM_KILLED
+127.0.0.1 - - [05/Jan/2026 06:23:07] "POST /webhook HTTP/1.1" 200 -
+📥 Received Webhook: DEPLOYMENT - FAILED
+✅ Alert sent to Telegram for FAILED
+127.0.0.1 - - [05/Jan/2026 06:23:14] "POST /webhook HTTP/1.1" 200 -
+'''
